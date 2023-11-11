@@ -1,0 +1,52 @@
+.counter{
+    display:grid;
+    grid-template-rows: 2fr 1fr;
+    width:30em;
+    height:60%;
+    border: 2px #61dafb solid;
+    border-radius: 20px;
+}
+
+.content {
+    display:grid;
+    margin:10px;
+    border: 2px #61dafb solid;
+    border-radius: 15px;
+    align-content: center;
+    justify-content: center;
+    color:#61dafb;
+    font-weight: bold;
+    padding-bottom: 30px;
+}
+.content .item {
+    align-content: center;
+    justify-content: center;
+    margin:5px;
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+}
+.item input {
+    border: 2px #61dafb solid;
+    border-radius: 10px;
+    align-self: center;
+    height: 40%;
+}
+
+.buttonControls{
+    align-content: center;
+    justify-content: center;
+    border: 2px #61dafb solid;
+    border-radius: 15px;
+    display: grid;
+    grid-gap: 5px;
+    padding: 10px;
+    margin: 10px;
+}
+.red {
+    color:darkred;
+}
+.showError{
+    position:absolute;
+    color:darkred;
+    font-weight: bold;
+}
