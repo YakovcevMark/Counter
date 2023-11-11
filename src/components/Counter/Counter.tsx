@@ -28,12 +28,12 @@ const Counter: React.FC<CounterPT> =
 
 
         const incValueHandler = useCallback(() => {
-            localStorage.setItem("counterValue", JSON.stringify(counterValue))
             setCounterValue(counterValue + 1)
         }, [counterValue])
         const resetHandler = useCallback(() => {
-            setCounterValue(0)
-        }, [setCounterValue])
+            setCounterValue(startValue)
+            setError("")
+        }, [setCounterValue,startValue, setError])
         const openSettings = useCallback(() => {
             setEditMode()
         }, [setEditMode])

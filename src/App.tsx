@@ -6,7 +6,7 @@ import Settings from "./components/Settings/Settings";
 function App() {
     const [maxValue, setMaxValue] = useState<number>(() => {
         const localStorageValue = localStorage.getItem("maxValue")
-        return localStorageValue ? +JSON.parse(localStorageValue) : 0;
+        return localStorageValue ? +JSON.parse(localStorageValue) : 5;
     })
     const [startValue, setStartValue] = useState<number>(() => {
         const localStorageValue = localStorage.getItem("startValue")
