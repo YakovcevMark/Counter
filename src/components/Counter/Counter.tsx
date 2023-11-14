@@ -1,42 +1,42 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import SuperButton from "../Common/SuperButton/SuperButton";
 import s from "./Counter.module.css"
+import {useDispatch, useSelector} from "react-redux";
+import {AppStateT} from "../../Redux/store";
+import {setCounterValue, setEditMode, setErrorValue} from "../../Redux/counterReducer";
 
-export type CounterPT = {
-    startValue: number
-    maxValue: number
-    error: string
-    setError: (errorType: string) => void
-    setEditMode: () => void
-}
+export type CounterPT = {}
 const Counter: React.FC<CounterPT> =
-    ({
-         startValue,
-         maxValue,
-         error,
-         setError,
-         setEditMode
+    () => {
+        const counterValue = useSelector<AppStateT, number>(state => state.counter.counterValue)
+        const startValue = useSelector<AppStateT, number>(state => state.counter.startValue)
+        const maxValue = useSelector<AppStateT, number>(state => state.counter.maxValue)
+        const error = useSelector<AppStateT, string>(state => state.counter.error)
+        const dispatch = useDispatch()
 
-     }) => {
-        const [counterValue, setCounterValue] = useState<number>(() => {
-            const localStorageValue = localStorage.getItem("startValue")
-            return localStorageValue ? +JSON.parse(localStorageValue) : startValue;
-        })
         useEffect(() => {
-            (counterValue >= maxValue) && setError("Max value")
-        }, [counterValue, maxValue, setError])
+            counterValue >= maxValue
+                ? dispatch(setErrorValue("Max value"))
+                : dispatch(setErrorValue(""))
+        }, [counterValue, maxValue, dispatch])
 
+        useEffect(() => {
+            dispatch(setCounterValue(startValue))
+        },[dispatch,startValue])
 
         const incValueHandler = useCallback(() => {
-            setCounterValue(counterValue + 1)
-        }, [counterValue])
+            dispatch(setCounterValue(counterValue + 1))
+        }, [dispatch, counterValue])
+
         const resetHandler = useCallback(() => {
-            setCounterValue(startValue)
-            setError("")
-        }, [setCounterValue,startValue, setError])
+            dispatch(setCounterValue(startValue))
+            dispatch(setErrorValue(""))
+        }, [dispatch, startValue])
+
         const openSettings = useCallback(() => {
-            setEditMode()
-        }, [setEditMode])
+            dispatch(setEditMode(true))
+        }, [dispatch])
+
         return (
             <div className={s.counter}>
                 <div className={s.content}>

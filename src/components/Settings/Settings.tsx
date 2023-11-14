@@ -1,44 +1,38 @@
 import React, {ChangeEvent, useCallback, useEffect} from 'react';
-import {CounterPT} from "../Counter/Counter";
 import s from "./Settings.module.css";
 import SuperButton from "../Common/SuperButton/SuperButton";
+import {useDispatch, useSelector} from "react-redux";
+import {AppStateT} from "../../Redux/store";
+import {setEditMode, setErrorValue, setMaxValue, setStartValue} from "../../Redux/counterReducer";
 
-type SettingsPT = CounterPT & {
-    setStartValue: (value: number) => void
-    setMaxValue: (value: number) => void
-}
+type SettingsPT = {}
 const Settings: React.FC<SettingsPT> =
-    ({
-         startValue,
-         maxValue,
-         error,
-         setError,
-         setEditMode,
-         setMaxValue,
-         setStartValue
-
-     }) => {
+    () => {
+        const startValue = useSelector<AppStateT, number>(state => state.counter.startValue)
+        const maxValue = useSelector<AppStateT, number>(state => state.counter.maxValue)
+        const error = useSelector<AppStateT, string>(state => state.counter.error)
+        const dispatch = useDispatch()
 
         const setSettings = useCallback(() => {
-            setEditMode()
-        }, [setEditMode])
+            dispatch(setEditMode(false))
+        }, [dispatch])
+
         useEffect(() => {
-            if (maxValue < startValue) {
-                setError("Start value can't be bigger then max value")
-            } else if (maxValue === startValue) {
-                setError("Max value can't equal start value")
-            } else {
-                setError("")
-            }
-        },[maxValue,startValue,setError])
+            maxValue < startValue ?
+                dispatch(setErrorValue("Start value can't be bigger then max value"))
+                : maxValue === startValue ?
+                    dispatch(setErrorValue("Max value can't equal start value"))
+                    : dispatch(setErrorValue(""))
+        }, [dispatch, startValue, maxValue])
 
         const maxValueChanger = (e: ChangeEvent<HTMLInputElement>) => {
-            setMaxValue(+e.currentTarget.value)
+            dispatch(setMaxValue(+e.currentTarget.value))
+        }
 
-        }
         const startValueChanger = (e: ChangeEvent<HTMLInputElement>) => {
-            setStartValue(+e.currentTarget.value)
+            dispatch(setStartValue(+e.currentTarget.value))
         }
+
         return (
             <div className={s.counter}>
                 <div className={s.content}>
